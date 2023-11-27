@@ -1,6 +1,9 @@
 <template>
-  <div class="q-pa-md">
-    <div class="row justify-center text-h6 text-bold">Login</div>
+  <div class="q-pa-md" align="center">
+    <div class="column justify-center text-h6 text-bold">
+      <h3>LOGIN</h3>
+      <h6>--- Welcome to BookStore ---</h6>
+    </div>
     <q-form
       @submit.prevent="loginUser"
       @reset.prevent="onReset"
@@ -54,8 +57,8 @@ export default defineComponent({
           username: this.username,
           password: this.password,
         };
-        const res = await api.post("/user/login", userLogin);
-        console.log("🚀 ~ loginUser ~ res:", res.data);
+        const res = await api.post("/user/signin", userLogin);
+        console.log("Login successfuly:", res.data);
 
         this.userStore.user = res.data;
         this.$router.push("/menu");

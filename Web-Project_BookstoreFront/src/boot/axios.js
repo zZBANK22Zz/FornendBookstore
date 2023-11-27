@@ -7,8 +7,25 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' })
+// const api = axios.create({ baseURL: 'http://localhost:3000/api' })
 
+const RESTAPI = "http://localhost:3000/api";
+const api = axios.create({
+  baseURL: RESTAPI,
+  headers: { "Content-Type": "application/json" },
+  timeout: 5000,
+});
+
+api.interceptors.request.use((config) => {
+  const userStore = useUserStore();
+  const token = userStore.user.accessToken;
+
+  if (token) {
+    config.headers["x-access-token"] = token;
+  }
+
+  return config;
+});
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
@@ -19,6 +36,7 @@ export default boot(({ app }) => {
   app.config.globalProperties.$api = api
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
+  app.config.globalProperties.$RESTAPI = RESTAPI;
 })
 
-export { api }
+export { api, RESTAPI };

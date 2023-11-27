@@ -5,11 +5,11 @@
       <h6>--- Welcome to BookStore ---</h6>
 
     </div>
-    <q-form @submit.prevent="onSubmit" @reset.prevent="onReset" class="q-mt-sm" ref="registerForm">
+    <q-form @submit.prevent="onSubmit" @reset.prevent="onReset" class="q-mt-sm">
       <div>
         <q-input
           filled
-          v-model="Firstname"
+          v-model="firstName"
           type="text"
           label="Please type your Firstname"
           lazy-rules
@@ -19,7 +19,7 @@
       <div>
         <q-input
           filled
-          v-model="Lastname"
+          v-model="lastName"
           type="text"
           label="Please type your Lastname"
           lazy-rules
@@ -40,7 +40,7 @@
       <div>
         <q-input
           filled
-          v-model="Birthday"
+          v-model="dateOfBirth"
           type="text"
           label="Please type your Birthday"
           lazy-rules
@@ -50,7 +50,17 @@
       <div>
         <q-input
           filled
-          v-model="Phonenumber"
+          v-model="address"
+          type="text"
+          label="Please type your address"
+          lazy-rules
+          :rules="[requiredValidate]"
+        />
+      </div>
+      <div>
+        <q-input
+          filled
+          v-model="phoneNumber"
           type="text"
           label="Please type your Phonenumber"
           lazy-rules
@@ -86,20 +96,24 @@
 </template>
 
 <script>
-import router from "../router/routes";
+import router from "../stores/user";
 import { defineComponent } from "vue";
+import { Notify } from "quasar";
 import { emailValidate, requiredValidate } from "../utils/validations";
 
 export default defineComponent({
   name: "ReqisterPage",
   data() {
     return {
-      Firstname: null,
-      Lastname: null,
+      firstName: null,
+      lastName: null,
       email: null,
-      Birthday: null,
-      Phonenumber: null,
       isPwd: true,
+      password: null,
+      dateOfBirth: null,
+      address: null,
+      phoneNumber: null,
+      role: 2
     };
   },
   methods: {
@@ -107,30 +121,34 @@ export default defineComponent({
     requiredValidate,
     onSubmit() {
       const newUser = {
-      Firstname: this.Firstname,
-      Lastname: this.Lastname,
-      email: this.email,
-      Birthday: this.Birthday,
-      Phonenumber: this.Phonenumber,
-      password: this.password,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        email: this.email,
+        password: this.password,
+        dateOfBirth: this.dateOfBirth,
+        address: this.address,
+        phoneNumber: this.phoneNumber,
+        role: this.role
       };
-      this.$api
-        .post("/user/signup", newUser)
+      this.$api.post("/user/create", newUser)
         .then((res) => {
           console.log(res);
           this.$router.push("/");
         })
         .catch((err) => {
+          console.log(err);
           err;
         });
     },
     onReset() {
-      this.Firstname = null;
-      this.Lastname = null;
-      this.email = null;
-      this.Birthday = null;
-      this.Phonenumber = null;
-      this.password = null;
+      (this.firstName= null),
+      (this.lastName= null),
+      (this.email= null),
+      (this.isPwd= true),
+      (this.password= null),
+      (this.dateOfBirth= null),
+      (this.address= null),
+      (this. phoneNumber= null)
     },
   },
 });

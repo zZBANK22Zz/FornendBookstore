@@ -2,32 +2,29 @@ import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: useStorage("user", {
-      id: 13,
-      email: null,
-      username: null,
-      password: null,
-      card_id: 8,
-      accessToken: null,
-      cart_id: null,
-    }),
+    userid: useStorage("userid", ""),
+    fullname: useStorage("fullname", ""),
+    accessToken: useStorage("accessToken", ""),
+    avatar: useStorage("avatar", ""),
   }),
-  methods: {
-    getAccessToken: (state) => {
-      return state.user.accessToken;
+  getters: {
+    getFullname: (state) => {
+      return state.fullname;
     },
+    getUserid: (state) => {
+      return state.userid;
+    },
+    getAccessToken: (state) => {
+      return state.accessToken;
+    },
+
   },
   actions: {
-    clearUserData() {
-      // Reset the user state to its initial values or clear user data
-      this.user = {
-        id: null,
-        email: null,
-        username: null,
-        password: null,
-        accessToken: null,
-        cart_id: null,
-      };
+    clearStorage() {
+      this.userid = "";
+      this.fullname = "";
+      this.accessToken = "";
+      this.avatar = "";
     },
   },
 });

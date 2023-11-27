@@ -15,9 +15,6 @@
           BookStore
         </q-toolbar-title>
 
-        <q-input>
-          <input type="text">
-        </q-input>
 
       </q-toolbar>
     </q-header>
